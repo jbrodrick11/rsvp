@@ -2,12 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Wedding RSVP</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Josh & Maddy's Wedding RSVP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <style>
     body {
       background-color: #fdf6f0;
@@ -33,30 +30,18 @@
     <p class="mb-5">We're so excited to celebrate with you! Please RSVP below.</p>
 
     <form id="rsvp-form" style="display:none;" method="POST" action="https://formspree.io/f/your-form-id">
-      <div class="mb-3">
-        <label for="name1" class="form-label">Guest 1 Name</label>
-        <input type="text" class="form-control" id="name1" name="guest1" required />
-      </div>
-
-      <div id="couple-fields" style="display:none;">
-        <div class="mb-3">
-          <label for="name2" class="form-label">Guest 2 Name</label>
-          <input type="text" class="form-control" id="name2" name="guest2" />
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="attendance" class="form-label">Will you attend?</label>
-        <select class="form-select" name="attendance" id="attendance" required>
-          <option value="">Select</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
-        </select>
+      <div id="guest-attendance-container" class="mb-4">
+        <!-- Dynamically generated guest attendance inputs will go here -->
       </div>
 
       <div class="mb-3">
         <label for="diet" class="form-label">Dietary Requirements</label>
-        <input type="text" class="form-control" id="diet" name="diet" />
+        <input type="text" class="form-control" id="diet" name="diet" placeholder="Please specify any dietary requirements" />
+      </div>
+
+      <div class="mb-3">
+        <label for="song" class="form-label">Song Recommendation</label>
+        <input type="text" class="form-control" id="song" name="song" placeholder="Suggest a song you'd love to hear" />
       </div>
 
       <button type="submit" class="btn btn-primary">Submit RSVP</button>
@@ -64,31 +49,86 @@
   </div>
 
   <script>
+    // Your guest data keyed by passcode; each passcode maps to an array of guest names
     const guestData = {
-      "JOSH2025": {
-        guest1: "Josh Brodrick",
-        guest2: "Alicia Keys",
-        type: "couple"
-      },
-      "LUCY2025": {
-        guest1: "Lucy Liu",
-        type: "single"
-      }
+      "JOSH2025": ["Josh Brodrick", "Alicia Keys"],
+      "LUCY2025": ["Lucy Liu"],
+      "SMITHFAM": ["John Smith", "Jane Smith", "Jimmy Smith"],
+      // Add your passcodes and guest names here
     };
 
-    const code = prompt("Enter your RSVP code:");
-    const data = guestData[code];
+    function createAttendanceInput(guestName, index) {
+      const container = document.createElement('div');
+      container.className = 'mb-3 text-start';
 
-    if (!data) {
-      document.body.innerHTML = "<h2 class='text-center mt-5'>Invalid code. Please try again.</h2>";
-    } else {
-      document.getElementById("rsvp-form").style.display = "block";
-      document.getElementById("name1").value = data.guest1;
-      if (data.type === "couple") {
-        document.getElementById("couple-fields").style.display = "block";
-        document.getElementById("name2").value = data.guest2;
+      const label = document.createElement('label');
+      label.className = 'form-label d-block';
+      label.textContent = `Will ${guestName} attend?`;
+      label.setAttribute('for', `attendance-${index}-yes`);
+      container.appendChild(label);
+
+      // Yes radio
+      const yesDiv = document.createElement('div');
+      yesDiv.className = 'form-check form-check-inline';
+      const yesInput = document.createElement('input');
+      yesInput.className = 'form-check-input';
+      yesInput.type = 'radio';
+      yesInput.name = `attendance-${index}`;
+      yesInput.id = `attendance-${index}-yes`;
+      yesInput.value = 'Yes';
+      yesInput.required = true;
+      yesDiv.appendChild(yesInput);
+      const yesLabel = document.createElement('label');
+      yesLabel.className = 'form-check-label';
+      yesLabel.htmlFor = yesInput.id;
+      yesLabel.textContent = 'Yes';
+      yesDiv.appendChild(yesLabel);
+      container.appendChild(yesDiv);
+
+      // No radio
+      const noDiv = document.createElement('div');
+      noDiv.className = 'form-check form-check-inline';
+      const noInput = document.createElement('input');
+      noInput.className = 'form-check-input';
+      noInput.type = 'radio';
+      noInput.name = `attendance-${index}`;
+      noInput.id = `attendance-${index}-no`;
+      noInput.value = 'No';
+      noDiv.appendChild(noInput);
+      const noLabel = document.createElement('label');
+      noLabel.className = 'form-check-label';
+      noLabel.htmlFor = noInput.id;
+      noLabel.textContent = 'No';
+      noDiv.appendChild(noLabel);
+      container.appendChild(noDiv);
+
+      return container;
+    }
+
+    function showFormForGuests(guestNames) {
+      const container = document.getElementById('guest-attendance-container');
+      container.innerHTML = '';
+      guestNames.forEach((name, idx) => {
+        container.appendChild(createAttendanceInput(name, idx));
+      });
+      document.getElementById('rsvp-form').style.display = 'block';
+    }
+
+    function askPasscode() {
+      const code = prompt("Enter your RSVP code:");
+      if (!code) {
+        document.body.innerHTML = "<h2 class='text-center mt-5'>Access Denied: No code entered.</h2>";
+        return;
+      }
+      const passcode = code.trim().toUpperCase();
+      if (guestData[passcode]) {
+        showFormForGuests(guestData[passcode]);
+      } else {
+        document.body.innerHTML = "<h2 class='text-center mt-5'>Access Denied: Invalid code.</h2>";
       }
     }
+
+    window.onload = askPasscode;
   </script>
 </body>
 </html>
