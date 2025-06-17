@@ -2,91 +2,85 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Wedding RSVP</title>
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wedding RSVP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
       background-color: #fdf6f0;
       font-family: 'Segoe UI', sans-serif;
     }
-    .container {
-      max-width: 600px;
-      margin: 50px auto;
-    }
-    audio {
-      display: none;
-    }
+    .hidden { display: none; }
+    .form-section { max-width: 500px; margin: auto; }
   </style>
 </head>
-<body>
+<body class="text-center py-5">
+
   <audio autoplay loop>
-    <source src="your-song.mp3" type="audio/mpeg" />
+    <source src="your-song.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
-  <div class="container text-center">
-    <h1 class="mb-3">Josh & Maddys's Wedding</h1>
-    <p class="mb-5">We're so excited to celebrate with you! Please RSVP below.</p>
+  <div class="container">
+    <h1 class="mb-4">You're Invited!</h1>
+    <p>Please enter your RSVP code to begin:</p>
 
-    <form id="rsvp-form" style="display:none;" method="POST" action="https://formspree.io/f/your-form-id">
+    <input type="text" id="code-input" class="form-control form-section mb-3" placeholder="Enter your code">
+    <button class="btn btn-primary" onclick="checkCode()">Submit Code</button>
+
+    <form id="rsvp-form" class="form-section mt-4 hidden" method="POST" action="https://formspree.io/f/your-form-id">
       <div class="mb-3">
-        <label for="name1" class="form-label">Guest 1 Name</label>
-        <input type="text" class="form-control" id="name1" name="guest1" required />
+        <label for="name1" class="form-label" id="label1">Guest 1</label>
+        <input type="text" class="form-control" id="name1" name="guest1" readonly />
       </div>
 
-      <div id="couple-fields" style="display:none;">
-        <div class="mb-3">
-          <label for="name2" class="form-label">Maddy Cook</label>
-          <input type="text" class="form-control" id="name2" name="guest2" />
-        </div>
+      <div class="mb-3 hidden" id="guest2-wrapper">
+        <label for="name2" class="form-label" id="label2">Guest 2</label>
+        <input type="text" class="form-control" id="name2" name="guest2" readonly />
       </div>
 
       <div class="mb-3">
         <label for="attendance" class="form-label">Will you attend?</label>
-        <select class="form-select" name="attendance" id="attendance" required>
-          <option value="">Select</option>
-          <option value="Yes">Yes</option>
-          <option value="No">No</option>
+        <select id="attendance" name="attendance" class="form-control" required>
+          <option value="">Choose one</option>
+          <option value="Yes">Yes, absolutely!</option>
+          <option value="No">Sorry, can't make it</option>
         </select>
       </div>
 
       <div class="mb-3">
-        <label for="diet" class="form-label">Dietary Requirements</label>
-        <input type="text" class="form-control" id="diet" name="diet" />
+        <label for="dietary" class="form-label">Any dietary requirements?</label>
+        <input type="text" class="form-control" id="dietary" name="dietary" />
       </div>
 
-      <button type="submit" class="btn btn-primary">Submit RSVP</button>
+      <button type="submit" class="btn btn-success">Submit RSVP</button>
     </form>
   </div>
 
   <script>
+    // Replace this with your real guest data
     const guestData = {
-      "JOSH2025": {
-        guest1: "Josh Brodrick",
-        guest2: "Alicia Keys",
-        type: "couple"
-      },
-      "LUCY2025": {
-        guest1: "Lucy Liu",
-        type: "single"
-      }
+      "alpha123": { type: "single", guest1: "Josh Brodrick" },
+      "beta456": { type: "couple", guest1: "Alicia Keys", guest2: "John Legend" }
     };
 
-    const code = prompt("Enter your RSVP code:");
-    const data = guestData[code];
+    function checkCode() {
+      const code = document.getElementById("code-input").value.trim().toLowerCase();
+      const data = guestData[code];
 
-    if (!data) {
-      document.body.innerHTML = "<h2 class='text-center mt-5'>Invalid code. Please try again.</h2>";
-    } else {
-      document.getElementById("rsvp-form").style.display = "block";
+      if (!data) {
+        alert("Invalid code. Please try again.");
+        return;
+      }
+
+      document.getElementById("rsvp-form").classList.remove("hidden");
       document.getElementById("name1").value = data.guest1;
+      document.getElementById("label1").textContent = data.guest1;
+
       if (data.type === "couple") {
-        document.getElementById("couple-fields").style.display = "block";
+        document.getElementById("guest2-wrapper").classList.remove("hidden");
         document.getElementById("name2").value = data.guest2;
+        document.getElementById("label2").textContent = data.guest2;
       }
     }
   </script>
