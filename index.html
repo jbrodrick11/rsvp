@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,105 +10,162 @@
       background-color: #fdf6f0;
       font-family: 'Segoe UI', sans-serif;
     }
-    .hidden {
-      display: none;
-    }
-    .form-section {
-      max-width: 500px;
-      margin: auto;
+    /* Make sure modal blocks page until code is entered */
+    .modal-backdrop.show {
+      opacity: 0.8;
     }
   </style>
 </head>
-<body class="text-center py-5">
+<body>
 
+  <!-- Background music -->
   <audio autoplay loop>
     <source src="your-song.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
 
-  <div class="container">
-    <h1 class="mb-4">You're Invited!</h1>
-    <p>Please enter your RSVP code to begin:</p>
-
-    <input
-      type="text"
-      id="code-input"
-      class="form-control form-section mb-3"
-      placeholder="Enter your code"
-    />
-    <button class="btn btn-primary" onclick="checkCode()">Submit Code</button>
-
-    <form
-      id="rsvp-form"
-      class="form-section mt-4 hidden"
-      method="POST"
-      action="https://formspree.io/f/your-form-id"
-    >
-      <div class="mb-3">
-        <label for="name1" class="form-label" id="label1">Guest 1</label>
-        <input type="text" class="form-control" id="name1" name="guest1" readonly />
+  <!-- Passcode modal -->
+  <div class="modal fade" id="passcodeModal" tabindex="-1" aria-labelledby="passcodeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="passcodeModalLabel">Enter your RSVP Code</h5>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="passcodeInput" class="form-control" placeholder="Enter your unique code" />
+          <div id="error-msg" class="text-danger mt-2" style="display:none;">Invalid code, please try again.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="submitPasscodeBtn" class="btn btn-primary">Submit</button>
+        </div>
       </div>
+    </div>
+  </div>
 
-      <div class="mb-3 hidden" id="guest2-wrapper">
-        <label for="name2" class="form-label" id="label2">Guest 2</label>
-        <input type="text" class="form-control" id="name2" name="guest2" readonly />
+  <div class="container py-5" style="display:none;" id="rsvp-container">
+    <h1 class="mb-4 text-center">Wedding RSVP</h1>
+    <form id="rsvpForm" method="POST" action="https://formspree.io/f/your-form-id">
+      <div id="guest-list" class="mb-4">
+        <!-- Guest attendance questions inserted here dynamically -->
       </div>
 
       <div class="mb-3">
-        <label for="attendance" id="attendance-label" class="form-label">Will you attend?</label>
-        <select id="attendance" name="attendance" class="form-control" required>
-          <option value="">Choose one</option>
-          <option value="Yes">Yes, absolutely!</option>
-          <option value="No">Sorry, can't make it</option>
-        </select>
+        <label for="dietary" class="form-label">Dietary requirements</label>
+        <input type="text" class="form-control" id="dietary" name="dietary" placeholder="Please specify any dietary requirements" />
       </div>
 
       <div class="mb-3">
-        <label for="dietary" class="form-label">Any dietary requirements?</label>
-        <input type="text" class="form-control" id="dietary" name="dietary" />
+        <label for="song" class="form-label">Song recommendation for the playlist</label>
+        <input type="text" class="form-control" id="song" name="song" placeholder="Suggest a song you'd love to hear" />
       </div>
 
       <button type="submit" class="btn btn-success">Submit RSVP</button>
     </form>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // Your guest data keyed by passcode, with arrays of guest names
     const guestData = {
-      alpha123: { type: "single", guest1: "Josh Brodrick" },
-      beta456: { type: "couple", guest1: "Alicia Keys", guest2: "John Legend" }
+      alpha123: ["Josh Brodrick"],
+      beta456: ["Alicia Keys", "John Legend"],
+      gamma789: ["The Smith Family", "Mom", "Dad", "Kiddo"]
+      // Add more passcodes and guest arrays here
     };
 
-    function checkCode() {
-      const code = document.getElementById("code-input").value.trim().toLowerCase();
-      const data = guestData[code];
+    const passcodeModal = new bootstrap.Modal(document.getElementById('passcodeModal'));
+    const passcodeInput = document.getElementById('passcodeInput');
+    const errorMsg = document.getElementById('error-msg');
+    const rsvpContainer = document.getElementById('rsvp-container');
+    const guestListDiv = document.getElementById('guest-list');
 
-      if (!data) {
-        alert("Invalid code. Please try again.");
-        return;
-      }
+    function createGuestAttendanceInput(name, index) {
+      const div = document.createElement('div');
+      div.className = 'mb-3';
 
-      document.getElementById("rsvp-form").classList.remove("hidden");
-      document.getElementById("name1").value = data.guest1;
-      document.getElementById("label1").textContent = data.guest1;
+      const label = document.createElement('label');
+      label.className = 'form-label';
+      label.textContent = `Will ${name} attend?`;
+      label.setAttribute('for', `attendance-${index}`);
 
-      if (data.type === "couple") {
-        document.getElementById("guest2-wrapper").classList.remove("hidden");
-        document.getElementById("name2").value = data.guest2;
-        document.getElementById("label2").textContent = data.guest2;
+      const yesId = `attendance-${index}-yes`;
+      const noId = `attendance-${index}-no`;
+
+      const yesInput = document.createElement('input');
+      yesInput.type = 'radio';
+      yesInput.name = `attendance-${index}`;
+      yesInput.id = yesId;
+      yesInput.value = 'Yes';
+      yesInput.required = true;
+
+      const yesLabel = document.createElement('label');
+      yesLabel.className = 'form-check-label me-3';
+      yesLabel.htmlFor = yesId;
+      yesLabel.textContent = 'Yes';
+
+      const noInput = document.createElement('input');
+      noInput.type = 'radio';
+      noInput.name = `attendance-${index}`;
+      noInput.id = noId;
+      noInput.value = 'No';
+
+      const noLabel = document.createElement('label');
+      noLabel.className = 'form-check-label';
+      noLabel.htmlFor = noId;
+      noLabel.textContent = 'No';
+
+      // Wrap radios in div with form-check class
+      const yesDiv = document.createElement('div');
+      yesDiv.className = 'form-check form-check-inline';
+      yesDiv.appendChild(yesInput);
+      yesDiv.appendChild(yesLabel);
+
+      const noDiv = document.createElement('div');
+      noDiv.className = 'form-check form-check-inline';
+      noDiv.appendChild(noInput);
+      noDiv.appendChild(noLabel);
+
+      div.appendChild(label);
+      div.appendChild(yesDiv);
+      div.appendChild(noDiv);
+
+      return div;
+    }
+
+    function showRSVPForm(guests) {
+      guestListDiv.innerHTML = ''; // clear previous
+
+      guests.forEach((guestName, idx) => {
+        const guestInput = createGuestAttendanceInput(guestName, idx);
+        guestListDiv.appendChild(guestInput);
+      });
+
+      rsvpContainer.style.display = 'block';
+    }
+
+    function handlePasscodeSubmit() {
+      const code = passcodeInput.value.trim().toLowerCase();
+      if (guestData.hasOwnProperty(code)) {
+        errorMsg.style.display = 'none';
+        passcodeModal.hide();
+        showRSVPForm(guestData[code]);
       } else {
-        document.getElementById("guest2-wrapper").classList.add("hidden");
-        document.getElementById("name2").value = "";
-        document.getElementById("label2").textContent = "Guest 2";
-      }
-
-      // Change attendance label dynamically:
-      const attendanceLabel = document.getElementById("attendance-label");
-      if (data.type === "couple") {
-        attendanceLabel.textContent = `Will ${data.guest1} & ${data.guest2} attend?`;
-      } else {
-        attendanceLabel.textContent = `Will ${data.guest1} attend?`;
+        errorMsg.style.display = 'block';
       }
     }
+
+    // Show modal on page load
+    window.onload = () => {
+      passcodeModal.show();
+    };
+
+    document.getElementById('submitPasscodeBtn').addEventListener('click', handlePasscodeSubmit);
+    passcodeInput.addEventListener('keyup', (e) => {
+      if (e.key === 'Enter') {
+        handlePasscodeSubmit();
+      }
+    });
   </script>
+
 </body>
 </html>
