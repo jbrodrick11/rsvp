@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,39 +10,20 @@
       background-color: #fdf6f0;
       font-family: 'Segoe UI', sans-serif;
     }
-    /* Make sure modal blocks page until code is entered */
-    .modal-backdrop.show {
-      opacity: 0.8;
+    #rsvp-container {
+      display: none;
     }
   </style>
 </head>
 <body>
 
   <!-- Background music -->
-  <audio autoplay loop>
+  <audio autoplay loop controls style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;">
     <source src="your-song.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
 
-  <!-- Passcode modal -->
-  <div class="modal fade" id="passcodeModal" tabindex="-1" aria-labelledby="passcodeModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="passcodeModalLabel">Enter your RSVP Code</h5>
-        </div>
-        <div class="modal-body">
-          <input type="text" id="passcodeInput" class="form-control" placeholder="Enter your unique code" />
-          <div id="error-msg" class="text-danger mt-2" style="display:none;">Invalid code, please try again.</div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" id="submitPasscodeBtn" class="btn btn-primary">Submit</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="container py-5" style="display:none;" id="rsvp-container">
+  <div class="container py-5" id="rsvp-container">
     <h1 class="mb-4 text-center">Wedding RSVP</h1>
     <form id="rsvpForm" method="POST" action="https://formspree.io/f/your-form-id">
       <div id="guest-list" class="mb-4">
@@ -63,7 +44,6 @@
     </form>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // Your guest data keyed by passcode, with arrays of guest names
     const guestData = {
@@ -72,12 +52,6 @@
       gamma789: ["The Smith Family", "Mom", "Dad", "Kiddo"]
       // Add more passcodes and guest arrays here
     };
-
-    const passcodeModal = new bootstrap.Modal(document.getElementById('passcodeModal'));
-    const passcodeInput = document.getElementById('passcodeInput');
-    const errorMsg = document.getElementById('error-msg');
-    const rsvpContainer = document.getElementById('rsvp-container');
-    const guestListDiv = document.getElementById('guest-list');
 
     function createGuestAttendanceInput(name, index) {
       const div = document.createElement('div');
@@ -133,6 +107,7 @@
     }
 
     function showRSVPForm(guests) {
+      const guestListDiv = document.getElementById('guest-list');
       guestListDiv.innerHTML = ''; // clear previous
 
       guests.forEach((guestName, idx) => {
@@ -140,32 +115,24 @@
         guestListDiv.appendChild(guestInput);
       });
 
-      rsvpContainer.style.display = 'block';
+      document.getElementById('rsvp-container').style.display = 'block';
     }
 
-    function handlePasscodeSubmit() {
-      const code = passcodeInput.value.trim().toLowerCase();
+    function askPasscode() {
+      const passcode = prompt("Enter your RSVP code:");
+      if (!passcode) {
+        document.body.innerHTML = "<div style='text-align:center; margin-top:100px;'><h2>Access Denied</h2><p>No code entered.</p></div>";
+        return;
+      }
+      const code = passcode.trim().toLowerCase();
       if (guestData.hasOwnProperty(code)) {
-        errorMsg.style.display = 'none';
-        passcodeModal.hide();
         showRSVPForm(guestData[code]);
       } else {
-        errorMsg.style.display = 'block';
+        document.body.innerHTML = "<div style='text-align:center; margin-top:100px;'><h2>Access Denied</h2><p>Incorrect code.</p></div>";
       }
     }
 
-    // Show modal on page load
-    window.onload = () => {
-      passcodeModal.show();
-    };
-
-    document.getElementById('submitPasscodeBtn').addEventListener('click', handlePasscodeSubmit);
-    passcodeInput.addEventListener('keyup', (e) => {
-      if (e.key === 'Enter') {
-        handlePasscodeSubmit();
-      }
-    });
+    window.onload = askPasscode;
   </script>
-
 </body>
 </html>
