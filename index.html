@@ -36,12 +36,12 @@
       <div id="guest-attendance"></div>
 
       <div class="mb-3">
-        <label for="diet" class="form-label">Dietary Requirements</label>
+        <label for="diet" class="form-label">Do you have any Dietary Requirements?</label>
         <input type="text" class="form-control" id="diet" name="diet" placeholder="Any dietary needs?" />
       </div>
 
       <div class="mb-3">
-        <label for="song" class="form-label">Song Request</label>
+        <label for="song" class="form-label">Suggest A Song to Boogy To!</label>
         <input type="text" class="form-control" id="song" name="song" placeholder="Suggest a song for the playlist" />
       </div>
 
@@ -58,7 +58,7 @@
     // Change this to your real guest data
     const guestData = {
       "JOSH2025": {
-        guests: ["Josh Brodrick", "Alicia Keys"]
+        guests: ["Josh Brodrick", "Maddy Cook"]
       },
       "LUCY2025": {
         guests: ["Lucy Liu"]
@@ -79,13 +79,13 @@
         // Guest name label
         const label = document.createElement("label");
         label.classList.add("form-label", "fw-semibold");
-        label.textContent = guest;
+        label.textContent = 'Will ${guest} be attending?';
 
         // Yes radio
         const yesRadio = document.createElement("input");
         yesRadio.type = "radio";
         yesRadio.name = `attendance_${index}`;
-        yesRadio.value = "Yes";
+        yesRadio.value = "Absolutely! I wouldn’t miss it for the world 💃";
         yesRadio.required = true;
         yesRadio.id = `attendance_${index}_yes`;
         yesRadio.classList.add("form-check-input", "ms-2");
@@ -99,7 +99,7 @@
         const noRadio = document.createElement("input");
         noRadio.type = "radio";
         noRadio.name = `attendance_${index}`;
-        noRadio.value = "No";
+        noRadio.value = "Sadly, I can’t make it 😔";
         noRadio.id = `attendance_${index}_no`;
         noRadio.classList.add("form-check-input", "ms-2");
 
