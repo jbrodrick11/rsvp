@@ -200,25 +200,36 @@
   updateCountdown();
   askPasscode();
 };
-    
-// countdown clock
-    function updateCountdown() {
-  const weddingDate = new Date("2025-11-01T00:00:00"); 
-  const today = new Date();
-  const oneDay = 1000 * 60 * 60 * 24;
 
-  const diffInTime = weddingDate.getTime() - today.getTime();
-  const diffInDays = Math.ceil(diffInTime / oneDay);
+  // Wedding date (Year, Month - 1, Day)
+  const weddingDate = new Date(2025, 11, 1); // Nov 1, 2025 (months are 0-based)
+  const messages = [
+    "[XX] days to go until Maddy & Josh make it legally weird.",
+    "[XX] days to go — still time to change your outfit (but not your mind).",
+    "[XX] days ‘til open bar o’clock.",
+    "[XX] days to go — practice your dance moves and polite small talk.",
+    "[XX] days to go until vows, cake, and questionable dance choices.",
+    "[XX] days to go — don’t ghost us now.",
+    "[XX] days to go — love is patient, but we're not.",
+  ];
 
-  const countdownText = diffInDays > 0
-    ? `Golly gee, only ${diffInDays} day${diffInDays === 1 ? '' : 's'} to go!`
-    : `Holy fuck, It's our wedding day!`;
+  function updateCountdown() {
+    const now = new Date();
+    const diffTime = weddingDate - now;
+    const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 
-  const countdownEl = document.getElementById("countdown");
-  if (countdownEl) {
-    countdownEl.textContent = countdownText;
+    // Replace [XX] in a random message
+    const messageTemplate = messages[Math.floor(Math.random() * messages.length)];
+    const message = messageTemplate.replace("[XX]", diffDays);
+
+    document.getElementById("countdown-text").textContent = message;
   }
-}
+
+  // Initial update
+  updateCountdown();
+
+  // Update every 5 seconds with a new random message
+  setInterval(updateCountdown, 5000);
 
   </script>
 </body>
