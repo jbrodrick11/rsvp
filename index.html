@@ -181,7 +181,7 @@
         document.body.innerHTML = "<h2 class='text-center mt-5'>No code entered. Access denied.</h2>";
         return;
       }
-      const data = guestData[code.toUpperCase()];
+      const data = guestData[code.trim().toLowerCase()];
       if (!data) {
         document.body.innerHTML = "<h2 class='text-center mt-5'>Invalid code. Please try again.</h2>";
         return;
