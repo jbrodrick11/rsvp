@@ -3,270 +3,597 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maddy & Josh's Wedding Invitation_v6</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap" rel="stylesheet">
+  <title>Maddy & Josh's Wedding RSVP</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Lobster&family=Nunito&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- AOS Animations -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
   <style>
-    @font-face {
-      font-family: 'Laries Script';
-      src: url('laries.otf') format('opentype');
+    :root {
+      --tea-rose: #FDBEC0;
+      --barn-red: #6C200C;
+      --bright-pink: #FE7289;
+      --salmon: #FA989B;
+      --white: #FEFFFF;
+      --cmyk-red: #F40B1A;
     }
 
     body {
-      background-color: #FDBEC0;
-      font-family: 'Lora', serif;
-      padding-top: 40px;
-      color: #6C200C;
+      background-color: var(--tea-rose);
+      font-family: 'Nunito', sans-serif;
+      padding: 40px 20px;
+      color: var(--barn-red);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    main {
+      max-width: 720px;
+      width: 100%;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      color: var(--bright-pink);
+      font-family: 'Lobster', sans-serif;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
     }
 
     h1 {
-      font-family: 'Laries Script', cursive;
-      color: #FE7289;
+      font-family: 'Lobster', cursive;
+      font-size: 3rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
 
-    h2, h3 {
-      font-family: 'Lato', cursive;
-      color: #FE7289;
+    h2 {
+      font-size: 2rem;
     }
 
-    label {
-      color: #8C4334;
+    h3 {
+      font-size: 1.5rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+
+    a {
+      color: var(--barn-red);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    a:hover,
+    a:focus {
+      color: var(--cmyk-red);
+      outline: none;
+    }
+
+    .section-card {
+      background-color: #fdd5d5;
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
     }
 
     .btn-primary {
-      background-color: #6C200C;
-      border-color: #6C200C;
+      background-color: var(--barn-red);
+      border-color: var(--barn-red);
+      font-weight: bold;
+      font-size: 1.1rem;
+      padding: 0.75rem 1.25rem;
+      transition: background-color 0.3s ease;
     }
 
-    .btn-primary:hover {
-      background-color: #F40B1A;
-      border-color: #F40B1A;
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background-color: var(--cmyk-red);
+      border-color: var(--cmyk-red);
+      outline: none;
+      box-shadow: 0 0 0 3px var(--salmon);
     }
 
-    .container {
-      max-width: 600px;
+    label {
+      color: var(--barn-red);
+      font-weight: 700;
+      user-select: none;
     }
 
+    /* Countdown Section */
+    #countdown-container {
+      text-align: center;
+      margin-bottom: 2rem;
+      user-select: none;
+    }
+
+    #countdown-days {
+      font-size: 4rem;
+      font-weight: 900;
+      color: var(--barn-red);
+      margin-bottom: 0.25rem;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    #countdown-message {
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(---barn-red);
+      font-weight: 900;
+    }
+
+    /* Password input modal style */
+    #passcode-container {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      max-width: 400px;
+      margin: 8vh auto 2rem;
+      text-align: center;
+    }
+
+    #passcode-container input[type="password"] {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: 2px solid var(--barn-red);
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      font-family: 'Nunito', sans-serif;
+      transition: border-color 0.3s ease;
+    }
+
+    #passcode-container input[type="password"]:focus {
+      border-color: var(--cmyk-red);
+      outline: none;
+      box-shadow: 0 0 8px var(--salmon);
+    }
+
+    #passcode-container button {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: none;
+      background-color: var(--barn-red);
+      color: var(--white);
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    #passcode-container button:hover,
+    #passcode-container button:focus {
+      background-color: var(--cmyk-red);
+      outline: none;
+      box-shadow: 0 0 8px var(--salmon);
+    }
+
+    #passcode-error {
+      color: var(--cmyk-red);
+      font-weight: 700;
+      margin-top: 0.5rem;
+      min-height: 1.2rem;
+    }
+
+    /* RSVP form styling */
+    #rsvp-form {
+      display: none;
+      background: var(--white);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      margin-bottom: 3rem;
+    }
+
+    /* Guest attendance cards */
+    .guest-card {
+      border: 2px solid var(--barn-red);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      user-select: none;
+    }
+
+    .guest-card:hover,
+    .guest-card:focus-within {
+      background-color: var(--salmon);
+      border-color: var(--cmyk-red);
+      outline: none;
+    }
+
+    .guest-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--barn-red);
+    }
+
+    .attendance-options {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .attendance-options label {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--barn-red);
+      user-select: none;
+    }
+
+    .attendance-options input[type="radio"] {
+      cursor: pointer;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Song suggestion */
+    #song-suggestion {
+      margin-top: 2rem;
+    }
+
+    /* Confirmation message */
+    #confirmation-message {
+      background-color: #d6f5d6;
+      border: 2px solid #6db36d;
+      border-radius: 12px;
+      padding: 1.5rem 2rem;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: #276627;
+      text-align: center;
+      display: none;
+      margin-bottom: 3rem;
+    }
+
+    /* Background music control */
     audio {
       position: fixed;
-      bottom: 10px;
-      right: 10px;
-      z-index: 1000;
+      bottom: 12px;
+      right: 12px;
+      z-index: 1100;
+      width: 240px;
+      max-width: 90vw;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
     }
 
-    .form-check-label {
-      margin-right: 15px;
+    /* Responsive typography */
+    @media (max-width: 576px) {
+      h1 {
+        font-size: 2.4rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      h3 {
+        font-size: 1.3rem;
+      }
+
+      #countdown-days {
+        font-size: 3rem;
+      }
+    }
+
+    /* Focus outline for accessibility */
+    button:focus,
+    input:focus,
+    a:focus,
+    label:focus {
+      outline: 3px solid var(--salmon);
+      outline-offset: 2px;
+    }
+
+    /* Couple photo placeholder */
+    #couple-photo {
+      width: 100%;
+      border-radius: 16px;
+      margin-bottom: 2rem;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     }
   </style>
 </head>
-
 <body>
+  <main role="main" class="container">
+    <h1 data-aos="fade-up">Maddy &amp; Josh’s Wedding</h1>
 
-  <!-- 🎵 Background Music -->
-  <audio autoplay loop>
+    <!-- Countdown Section -->
+    <section id="countdown-container" aria-live="polite" aria-atomic="true" data-aos="fade-up">
+     
+      <div id="countdown-message"></div>
+    </section>
+
+
+    <!-- Invitation Text Card -->
+    <section class="section-card" aria-labelledby="invitation-title" data-aos="fade-up">
+      <h2 id="invitation-title" class="text-center">You're Invited!</h2>
+      <p class="text-center fst-italic">
+        Good for you. (Yeah, we're a little surprised too)
+      </p>
+      <p class="text-center">
+        We’d love for you to join us as we celebrate our wedding on Saturday,
+        November 1st, 2025, at 4:45pm (for a 5:00pm sharp start) at The Altar
+        Electric.
+      </p>
+      <p class="text-center">
+        After the ceremony, we’ll keep the good vibes going with kick-ons at
+        Stingrays (2 minutes down the road).
+      </p>
+      <p class="text-center">Get ready for a big night of fun, love, and free booze!</p>
+      <p class="text-center">
+        Bring your best moves, your best stories, and your best hangover plan —
+        it’s going to be a night to remember.
+      </p>
+      <p class="text-center">
+        We assume you're coming, but please let us know whether you can make it
+        or not by the 21st of September at the latest.
+      </p>
+    </section>
+
+    <!-- Password Entry -->
+    <section id="passcode-container" aria-live="assertive" aria-atomic="true" data-aos="fade-up">
+      <h2>Enter your RSVP code</h2>
+      <p>Please enter the RSVP code found on your invitation to access the RSVP form.</p>
+      <input
+        type="password"
+        id="passcode-input"
+        name="passcode"
+        aria-label="RSVP code"
+        autocomplete="off"
+        placeholder="Enter your RSVP code"
+      />
+      <button id="passcode-submit" aria-describedby="passcode-error">Unlock RSVP</button>
+      <div id="passcode-error" role="alert" aria-live="assertive"></div>
+    </section>
+
+    <!-- RSVP Form -->
+    <form
+      id="rsvp-form"
+      method="POST"
+      action="https://api.web3forms.com/submit"
+      data-aos="fade-up"
+      aria-live="polite"
+      aria-atomic="true"
+      novalidate
+    >
+      <input
+        type="hidden"
+        name="access_key"
+        value="4b742c11-700f-4351-bbbf-2616360083f0"
+      />
+      <input
+        type="hidden"
+        name="subject"
+        value="New RSVP Submission from Wedding Site"
+      />
+      <input
+        type="hidden"
+        name="from_name"
+        value="Maddy & Josh's Wedding RSVP"
+      />
+      <input
+        type="hidden"
+        name="redirect"
+        value="https://your-website-url.com/thank-you.html"
+      />
+      <input type="checkbox" name="botcheck" style="display:none;" />
+
+      <div id="guest-attendance" aria-live="polite"></div>
+
+      <hr />
+
+      <section aria-labelledby="ceremony-title">
+        <h2 id="ceremony-title" class="text-center">Ceremony &amp; Party</h2>
+
+        <article>
+          <h3>The Altar Electric</h3>
+          <p>
+            Our ceremony will be held at
+            <a
+              href="https://www.thealtarelectric.com.au/"
+              target="_blank"
+              rel="noopener"
+              >The Altar Electric</a
+            >.
+            Tucked in Abbotsford’s creative heart, this intimate space is full of
+            personality, good vibes, and just the right amount of cheek. Genuinely,
+            we both walked in and fell in love within seconds. We can’t wait to say
+            “I do” here.
+          </p>
+        </article>
+
+        <article>
+          <h3>Stingrays at Bodriggy</h3>
+          <p>
+            After the ceremony, we’ll be heading to
+            <a
+              href="https://www.bodriggy.beer/stingrays"
+              target="_blank"
+              rel="noopener"
+              >Stingrays</a
+            >
+            — the cocktail saloon nestled inside Bodriggy Brewery. It’s a vibey space
+            with incredible drinks, delicious food, and plenty of space for a boogy.
+            We’d love for you to join us there to eat, drink, and dance into the night.
+          </p>
+        </article>
+
+        <article>
+          <h3>Dress Code</h3>
+          <p>There’s no strict dress code — just wear whatever makes you feel fabulous!</p>
+          <p>
+            Sequins? Yes. Velvet? Absolutely. Power suits, jumpsuits, leather boots,
+            vintage glam, or your loudest shirt with complicated patterns on it from
+            Dan Flashes? All welcome.
+          </p>
+          <p>Except crocs. No crocs.</p>
+        </article>
+      </section>
+
+      <hr />
+
+      <section aria-labelledby="extras-title">
+        <h2 id="extras-title" class="text-center">Extras</h2>
+
+        <article>
+          <h3>Wishing Well</h3>
+          <p>
+            Your presence at our wedding is far greater than any presents (see what we
+            did there?). If you’d like to help us start our new life together, there
+            will be a wishing well set up on the day. No pressure at all though -
+            what's far more important to us is that you help us celebrate.
+          </p>
+        </article>
+
+        <article>
+          <h3>Where to Stay</h3>
+          <p>If you're travelling and are looking for a place to stay, we've found a few options for you to explore:</p>
+
+          <h4>Veriu Hotel, Collingwood</h4>
+          <p>
+            <a href="http://www.veriu.com.au/collingwood" target="_blank" rel="noopener">Veriu Hotel</a>
+            is just 1km from The Altar Electric on Johnston Street. It’s stylish, central,
+            and perfect for those looking to keep the good times rolling all weekend.
+          </p>
+          <p>
+            You can receive 10% off your booking — just use the code
+            <strong>ALTAR</strong>. Mention you're attending a wedding and they'll pop a bottle of bubbly in your room to celebrate.
+          </p>
+
+          <h4>CLA Apartments, Abbotsford</h4>
+          <p>
+            For larger groups, we recommend
+            <a
+              href="https://corpliving.com.au/properties/abbotsford-serviced-apartments-accommodation/"
+              target="_blank"
+              rel="noopener"
+              >CLA Apartments</a
+            >
+            on Victoria Street — an excellent nearby option.
+          </p>
+          <p>You can receive 10% off your booking by using the code <strong>ALTAR10</strong> when booking directly.</p>
+        </article>
+      </section>
+
+      <hr />
+
+      <section id="song-suggestion" aria-labelledby="song-title">
+        <h3 id="song-title"><strong>Got a favourite tune?</strong> 🎶</h3>
+        <p>
+          While we certainly know our way around the jukebox, we’d love to hear what
+          gets <em>you</em> moving! Help us build one humdinger of a playlist for the
+          after party.
+        </p>
+        <p>Fair warning: we <em>will</em> be judging your suggestions. Harshly.</p>
+        <label for="song" class="form-label">Suggest a song for the playlist 🎵</label>
+        <input
+          type="text"
+          class="form-control"
+          id="song"
+          name="song"
+          autocomplete="off"
+          placeholder="Type song title or artist"
+        />
+      </section>
+
+      <button type="submit" class="btn btn-primary w-100 mt-4">Send My RSVP</button>
+    </form>
+
+    <!-- Confirmation message -->
+    <div id="confirmation-message" role="alert" aria-live="polite">
+      Thank you for your RSVP! We can’t wait to celebrate with you 🎉
+    </div>
+  </main>
+
+  <!-- Background Music -->
+  <audio autoplay loop controls aria-label="Background music for wedding site">
     <source src="your-song.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
 
-  <div class="container">
-    <h1 class="mb-4 text-center">Maddy and Josh’s Wedding</h1>
-
-    <p class="text-center mb-4" id="countdown-text" style="font-size: 1.2rem;"></p>
-
-    <h2 style="text-align: center;"><strong>Congrats &mdash; you made the cut!<br /></strong><em style="font-size: 16px;">Good for you. (Yeah, we're a little surprised too)</em></h2>
-    <div>&nbsp;</div>
-    <div>We’d love for you to join us as we celebrate our wedding on Saturday, November 1st, 2025, at 4:45pm (for a 5:00pm sharp start) at The Alter Electric.</div>
-    <div>&nbsp;</div>
-    <div>After the ceremony, we’ll keep the good vibes going with kick-ons at Stingrays (2 minutes down the road).</div>
-    <div>&nbsp;</div>
-    <div>Get ready for a big night of fun, love, and free booze!</div>
-    <div>&nbsp;</div>
-    <div>Bring your best moves, your best stories, and your best hangover plan — it’s going to be a night to remember.</div>
-    <div>&nbsp;</div>
-    <div>We assume you're coming, but please let us know whether you can make it or not by the 21st of September at the latest.</div>
-    <p>&nbsp;</p>
-
-    <hr />
-
-    <h3 class="mb-4 text-center">Let Us Know Who Will Be Coming</h3>
-    <p>Choose one of the attendance options below and when you're ready, press the submit button at the bottom of this page to let us know!</p>
-
-    <!-- ✅ Updated Web3Forms Form Starts Here -->
-    <form id="rsvp-form" style="display:none;" method="POST" action="https://api.web3forms.com/submit">
-      <input type="hidden" name="access_key" value="4b742c11-700f-4351-bbbf-2616360083f0" />
-      <input type="hidden" name="subject" value="New RSVP Submission from Wedding Site" />
-      <input type="hidden" name="from_name" value="Maddy & Josh's Wedding RSVP" />
-      <input type="hidden" name="redirect" value="https://your-website-url.com/thank-you.html" />
-      <input type="checkbox" name="botcheck" style="display:none;" />
-
-      <div id="guest-attendance"></div>
-
-      <hr />
-
-      <div class="container">
-        <div class="row">
-          <h2 style="text-align: center;">Ceremony Time</h2>
-
-          <h4><strong>The Altar Electric</strong></h4>
-          <p>
-            Our ceremony will be held at 
-            <a href="https://www.thealtarelectric.com.au/" target="_blank" rel="noopener">The Altar Electric</a>.
-            Tucked in Abbotsford’s creative heart, this intimate space is full of personality, good vibes, and just the right amount of cheek. 
-            Genuinely, we both walked in and fell in love within seconds. We can’t wait to say “I do” here.
-          </p>
-
-          <h4><strong>Stingrays at Bodriggy</strong></h4>
-          <p>
-            After the ceremony, we’ll be heading to 
-            <a href="https://www.bodriggy.beer/stingrays" target="_blank" rel="noopener">Stingrays</a> — 
-            the cocktail saloon nestled inside Bodriggy Brewery.
-            It’s a vibey space with incredible drinks, delicious food, and plenty of space for a boogy. 
-            We’d love for you to join us there to eat, drink, and dance into the night.
-          </p>
-
-          <h4>Dress Code</h4>
-          <p>There’s no strict dress code — just wear whatever makes you feel fabulous!</p>
-          <p>Sequins? Yes. Velvet? Absolutely. Power suits, jumpsuits, leather boots, vintage glam, or your loudest shirt with complicated patterns on it from Dan Flashes? All welcome.</p>
-          <p>Except crocs. No crocs.</p>
-
-          <hr />
-
-          <h3 class="mb-4 text-center">Just A Few More Things...</h3>
-
-          <h3>Wishing Well</h3>
-          <p>Your presence at our wedding is far greater than any presents (see what we did there?). If you’d like to help us start our new life together, there will be a wishing well set up on the day. No pressure at all though - what's far more important to us is that you help us celebrate.</p>
-
-          <h3>Where to Stay</h3>
-          <p>If you're travelling and are looking for a place to stay, we've found a few options for you to explore:</p>
-
-          <h4><strong>Veriu Hotel, Collingwood</strong></h4>
-          <p>
-            <a href="http://www.veriu.com.au/collingwood" target="_blank" rel="noopener">Veriu Hotel</a> is just 1km from The Altar Electric on Johnston Street.
-            It’s stylish, central, and perfect for those looking to keep the good times rolling all weekend.
-          </p>
-          <p>You can receive 10% off your booking — just use the code <strong>ALTAR</strong>. Mention you're attending a wedding and they'll pop a bottle of bubbly in your room to celebrate.</p>
-
-          <h4><strong>CLA Apartments, Abbotsford</strong></h4>
-          <p>
-            For larger groups, we recommend 
-            <a href="https://corpliving.com.au/properties/abbotsford-serviced-apartments-accommodation/" target="_blank" rel="noopener">
-              CLA Apartments</a> on Victoria Street — an excellent nearby option.
-          </p>
-          <p>You can receive 10% off your booking by using the code <strong>ALTAR10</strong> when booking directly.</p>
-        </div>
-
-        <div class="mb-3">
-          <h3><strong>Got a favourite tune?</strong> 🎶</h3>
-          <p>While we certainly know our way around the jukebox, we’d love to hear what gets <em>you</em> moving! Help us build one humdinger of a playlist for the after party.</p>
-          <p>Fair warning: we <em>will</em> be judging your suggestions. Harshly.</p>
-          <label for="song" class="form-label">Suggest a song for the playlist 🎵</label>
-          <input type="text" class="form-control" id="song" name="song" />
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">Send My RSVP</button>
-      </div>
-    </form>
-  </div>
+  <!-- AOS Animation script -->
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
   <script>
+    AOS.init();
+
+    // Guest data keyed by password
     const guestData = {
-      "cunt": { guests: ["Donna", "Daryl"]},
-      "crickets": { guests: ["Georgia", "Angus", "Avery"]},
-      "holden": { guests: ["Lyn", "Rick"]},
-      "bluetoothbbq": { guests: ["Deidre", "Mick"]},
-      "mussels": { guests: ["Jodi"]},
-      "eggman": { guests: ["Stuart"]},
-      "numbertwo": { guests: ["Mandy", "Dale"]},
-      "yeehaw": { guests: ["Vikki", "Justin"]},
-      "upthewahs": { guests: ["John", "Ava"]},
-      "potato": { guests: ["Tayla", "Scott", "Marlee", "Luna"]},
-      "trolley": { guests: ["Sophie", "Mitch"]},
-      "zingerbox": { guests: ["Sarah", "Nick"]},
-      "nosebleed": { guests: ["Katie", "Ash"]},
-      "mtcnotascam": { guests: ["Tori", "Tyler"]},
-      "cromulant": { guests: ["Sonja", "Marty"]},
-      "sensual": { guests: ["Dan"]},
-      "browny": { guests: ["Candice"]},
-      "teamedward": { guests: ["Maddie"]},
-      "bitey": { guests: ["Amelia"]},
-      "tinga": { guests: ["Clea", "Stefan"]},
-      "associateproductmanager": { guests: ["Jason", "Noy"]}
+      cunt: { guests: ["Donna", "Daryl"] },
+      crickets: { guests: ["Georgia", "Angus", "Avery"] },
+      holden: { guests: ["Lyn", "Rick"] },
+      bluetoothbbq: { guests: ["Deidre", "Mick"] },
+      mussels: { guests: ["Jodi"] },
+      eggman: { guests: ["Stuart"] },
+      numbertwo: { guests: ["Mandy", "Dale"] },
+      yeehaw: { guests: ["Vikki", "Justin"] },
+      upthewahs: { guests: ["John", "Ava"] },
+      potato: { guests: ["Tayla", "Scott", "Marlee", "Luna"] },
+      trolley: { guests: ["Sophie", "Mitch"] },
+      zingerbox: { guests: ["Sarah", "Nick"] },
+      nosebleed: { guests: ["Katie", "Ash"] },
+      mtcnotascam: { guests: ["Tori", "Tyler"] },
+      cromulant: { guests: ["Sonja", "Marty"] },
+      sensual: { guests: ["Dan"] },
+      browny: { guests: ["Candice"] },
+      teamedward: { guests: ["Maddie"] },
+      bitey: { guests: ["Amelia"] },
+      tinga: { guests: ["Clea", "Stefan"] },
+      associateproductmanager: { guests: ["Jason", "Noy"] },
     };
 
-    function createGuestInputs(guests) {
-      const container = document.getElementById("guest-attendance");
-      container.innerHTML = '';
+    // Elements
+    const passcodeContainer = document.getElementById("passcode-container");
+    const passcodeInput = document.getElementById("passcode-input");
+    const passcodeSubmit = document.getElementById("passcode-submit");
+    const passcodeError = document.getElementById("passcode-error");
+    const rsvpForm = document.getElementById("rsvp-form");
+    const guestAttendance = document.getElementById("guest-attendance");
+    const confirmationMessage = document.getElementById("confirmation-message");
 
-      guests.forEach((guest, index) => {
-        const guestDiv = document.createElement("div");
-        guestDiv.classList.add("mb-3");
+    // Countdown elements
+    const countdownDays = document.getElementById("countdown-days");
+    const countdownMessage = document.getElementById("countdown-message");
 
-        const label = document.createElement("label");
-        label.classList.add("form-label", "fw-semibold");
-        label.textContent = `Will ${guest} be celebrating with us?`;
+    // Wedding date: Nov 1, 2025, 17:00 (5pm)
+    const weddingDate = new Date(2025, 10, 1, 17, 0, 0);
 
-        const yesRadio = document.createElement("input");
-        yesRadio.type = "radio";
-        yesRadio.name = `attendance_${index}`;
-        yesRadio.value = `Yes – ${guest} is attending 🎉`;
-        yesRadio.required = true;
-        yesRadio.id = `attendance_${index}_yes`;
-        yesRadio.classList.add("form-check-input", "ms-2");
-
-        const yesLabel = document.createElement("label");
-        yesLabel.htmlFor = yesRadio.id;
-        yesLabel.textContent = "Absolutely! 🎊";
-        yesLabel.classList.add("form-check-label", "ms-1", "me-3");
-
-        const noRadio = document.createElement("input");
-        noRadio.type = "radio";
-        noRadio.name = `attendance_${index}`;
-        noRadio.value = `No – ${guest} can't make it 😔`;
-        noRadio.id = `attendance_${index}_no`;
-        noRadio.classList.add("form-check-input", "ms-2");
-
-        const noLabel = document.createElement("label");
-        noLabel.htmlFor = noRadio.id;
-        noLabel.textContent = "Sending love from afar 💌";
-        noLabel.classList.add("form-check-label", "ms-1");
-
-        const radiosDiv = document.createElement("div");
-        radiosDiv.classList.add("d-flex", "align-items-center");
-
-        radiosDiv.appendChild(yesRadio);
-        radiosDiv.appendChild(yesLabel);
-        radiosDiv.appendChild(noRadio);
-        radiosDiv.appendChild(noLabel);
-
-        guestDiv.appendChild(label);
-        guestDiv.appendChild(radiosDiv);
-        container.appendChild(guestDiv);
-      });
-    }
-
-    function askPasscode() {
-      const code = prompt("Please enter the RSVP code on your invitation:");
-      if (!code) {
-        document.body.innerHTML = "<h2 class='text-center mt-5'>No code. No hat. No play. Access denied.</h2>";
-        return;
-      }
-      const data = guestData[code.trim().toLowerCase()];
-      if (!data) {
-        document.body.innerHTML = "<h2 class='text-center mt-5'>No deal! You must have entered the wrong code, please try again.</h2>";
-        return;
-      }
-      document.getElementById("rsvp-form").style.display = "block";
-      createGuestInputs(data.guests);
-    }
-
-    window.onload = () => {
-      askPasscode();
-      updateCountdown();
-    };
-
-    const weddingDate = new Date(2025, 10, 1);
-    const messages = [
+    const countdownMessages = [
       "[XX] days to go until Maddy & Josh make it legally weird.",
       "[XX] days to go — still time to change your outfit (but not your mind).",
       "[XX] days ‘til open bar o’clock.",
@@ -276,18 +603,172 @@
       "[XX] days to go — love is patient, but we're not.",
     ];
 
+    // Update countdown display
     function updateCountdown() {
       const now = new Date();
-      const diffTime = weddingDate - now;
-      const diffDays = Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+      let diffTime = weddingDate - now;
+      if (diffTime < 0) diffTime = 0; // no negative days
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-      const messageTemplate = messages[Math.floor(Math.random() * messages.length)];
-      const message = messageTemplate.replace("[XX]", diffDays);
 
-      document.getElementById("countdown-text").textContent = message;
+      const randomIndex = Math.floor(Math.random() * countdownMessages.length);
+      const message = countdownMessages[randomIndex].replace("[XX]", diffDays);
+      countdownMessage.textContent = message;
     }
 
-    setInterval(updateCountdown, 10000);
+    // Create guest attendance inputs
+    function createGuestInputs(guests) {
+      guestAttendance.innerHTML = "";
+      guests.forEach((guest, idx) => {
+        // Create guest card container
+        const card = document.createElement("div");
+        card.className = "guest-card";
+        card.tabIndex = 0;
+        card.setAttribute("role", "group");
+        card.setAttribute("aria-labelledby", `guest-label-${idx}`);
+
+        // Guest name label
+        const guestName = document.createElement("div");
+        guestName.className = "guest-name";
+        guestName.id = `guest-label-${idx}`;
+        guestName.textContent = guest;
+
+        // Attendance options container
+        const options = document.createElement("div");
+        options.className = "attendance-options";
+
+        // Yes option
+        const yesId = `attendance_${idx}_yes`;
+        const yesLabel = document.createElement("label");
+        yesLabel.htmlFor = yesId;
+        yesLabel.innerHTML = `🎉 <span>Absolutely!</span>`;
+        const yesInput = document.createElement("input");
+        yesInput.type = "radio";
+        yesInput.name = `attendance_${idx}`;
+        yesInput.value = `Yes – ${guest} is attending 🎉`;
+        yesInput.id = yesId;
+        yesInput.required = true;
+
+        // No option
+        const noId = `attendance_${idx}_no`;
+        const noLabel = document.createElement("label");
+        noLabel.htmlFor = noId;
+        noLabel.innerHTML = `💌 <span>Sending love from afar</span>`;
+        const noInput = document.createElement("input");
+        noInput.type = "radio";
+        noInput.name = `attendance_${idx}`;
+        noInput.value = `No – ${guest} can't make it 😔`;
+        noInput.id = noId;
+
+        // Append inputs and labels
+        yesLabel.prepend(yesInput);
+        noLabel.prepend(noInput);
+
+        options.appendChild(yesLabel);
+        options.appendChild(noLabel);
+
+        card.appendChild(guestName);
+        card.appendChild(options);
+
+        guestAttendance.appendChild(card);
+      });
+    }
+
+    // Show error
+    function showError(message) {
+      passcodeError.textContent = message;
+      passcodeInput.setAttribute("aria-invalid", "true");
+    }
+
+    // Clear error
+    function clearError() {
+      passcodeError.textContent = "";
+      passcodeInput.removeAttribute("aria-invalid");
+    }
+
+    // Unlock RSVP form on correct code
+    function unlockRSVP(code) {
+      clearError();
+      const key = code.trim().toLowerCase();
+      const data = guestData[key];
+      if (!data) {
+        showError(
+          "No deal! You must have entered the wrong code, please try again."
+        );
+        return false;
+      }
+
+      // Hide passcode input, show RSVP form, generate inputs
+      passcodeContainer.style.display = "none";
+      rsvpForm.style.display = "block";
+      createGuestInputs(data.guests);
+
+      // Focus first input for accessibility
+      const firstRadio = guestAttendance.querySelector(
+        'input[type="radio"]'
+      );
+      if (firstRadio) firstRadio.focus();
+
+      return true;
+    }
+
+    // Handle passcode submit
+    passcodeSubmit.addEventListener("click", () => {
+      const code = passcodeInput.value;
+      if (!code) {
+        showError("Please enter your RSVP code to continue.");
+        return;
+      }
+      unlockRSVP(code);
+    });
+
+    // Allow Enter key to submit passcode
+    passcodeInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        passcodeSubmit.click();
+      }
+    });
+
+    // Handle RSVP form submission
+    rsvpForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      // Basic validation: make sure all attendance questions answered
+      const guestsCount = guestAttendance.children.length;
+      for (let i = 0; i < guestsCount; i++) {
+        const radios = rsvpForm.querySelectorAll(
+          `input[name="attendance_${i}"]`
+        );
+        if (![...radios].some((radio) => radio.checked)) {
+          alert(
+            `Please confirm attendance for ${guestAttendance.children[i].querySelector(
+              ".guest-name"
+            ).textContent}.`
+          );
+          return;
+        }
+      }
+
+      // Disable button to prevent multiple submits
+      const submitBtn = rsvpForm.querySelector("button[type='submit']");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+
+      // Simulate submission (replace with actual form submission)
+      setTimeout(() => {
+        rsvpForm.style.display = "none";
+        confirmationMessage.style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 1200);
+    });
+
+    // Initialize countdown and accessibility focus on load
+    window.addEventListener("load", () => {
+      updateCountdown();
+      setInterval(updateCountdown, 10000);
+      passcodeInput.focus();
+    });
   </script>
 </body>
 </html>
