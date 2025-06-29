@@ -665,7 +665,7 @@ audio {
         const yesInput = document.createElement("input");
         yesInput.type = "radio";
         yesInput.name = `attendance_${idx}`;
-        yesInput.value = `Yes – ${guest} is attending 🎉`;
+        yesInput.value = `${guest} - Yes`;
         yesInput.id = yesId;
         yesInput.required = true;
 
@@ -677,7 +677,7 @@ audio {
         const noInput = document.createElement("input");
         noInput.type = "radio";
         noInput.name = `attendance_${idx}`;
-        noInput.value = `No – ${guest} can't make it 😔`;
+        noInput.value = `${guest} - No`;
         noInput.id = noId;
 
         // Append inputs and labels
