@@ -765,36 +765,35 @@ bgMusic.play().then(() => {
 
     // Handle RSVP form submission
     rsvpForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+  e.preventDefault();
 
-      // Basic validation: make sure all attendance questions answered
-      const guestsCount = guestAttendance.children.length;
-      for (let i = 0; i < guestsCount; i++) {
-        const radios = rsvpForm.querySelectorAll(
-          `input[name="attendance_${i}"]`
-        );
-        if (![...radios].some((radio) => radio.checked)) {
-          alert(
-            `Please confirm attendance for ${guestAttendance.children[i].querySelector(
-              ".guest-name"
-            ).textContent}.`
-          );
-          return;
-        }
-      }
+  const guestsCount = guestAttendance.children.length;
+  for (let i = 0; i < guestsCount; i++) {
+    const radios = rsvpForm.querySelectorAll(`input[name="attendance_${i}"]`);
+    if (![...radios].some((radio) => radio.checked)) {
+      alert(
+        `Please confirm attendance for ${guestAttendance.children[i].querySelector(".guest-name").textContent}.`
+      );
+      return;
+    }
+  }
 
-      // Disable button to prevent multiple submits
-      const submitBtn = rsvpForm.querySelector("button[type='submit']");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Sending...";
+  const submitBtn = rsvpForm.querySelector("button[type='submit']");
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Sending...";
 
-      // Simulate submission (replace with actual form submission)
-      setTimeout(() => {
-        rsvpForm.style.display = "none";
-        confirmationMessage.style.display = "block";
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 1200);
-    });
+  // Use Web3Forms for actual submission
+  rsvpForm.submit();
+
+  // After submission, show confirmation message but keep form visible
+  setTimeout(() => {
+    confirmationMessage.style.display = "block";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Send My RSVP";
+    window.scrollTo({ top: confirmationMessage.offsetTop - 40, behavior: "smooth" });
+  }, 1500);
+});
+
 
     // Initialize countdown and accessibility focus on load
     window.addEventListener("load", () => {
