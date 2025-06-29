@@ -826,16 +826,25 @@ audio {
   submitBtn.textContent = "Sending...";
 
   // Prepare form data for submission
-  const formData = new FormData(rsvpForm);
-// Combine attendance answers into one string
-let attendanceCombined = [];
-for (let [key, value] of formData.entries()) {
+const formData = new FormData(rsvpForm);
+
+// Copy attendance answers safely without modifying the iterator
+const attendanceCombined = [];
+const toDelete = [];
+
+for (const [key, value] of formData.entries()) {
   if (key.startsWith("attendance_")) {
     attendanceCombined.push(value);
-    formData.delete(key); // remove individual attendance keys
+    toDelete.push(key);
   }
 }
+
+// Clean up individual attendance fields after iteration
+toDelete.forEach(key => formData.delete(key));
+
+// Append combined attendance
 formData.append("attendance", attendanceCombined.join(", "));
+
   fetch("https://api.web3forms.com/submit", {
     method: "POST",
     body: formData
