@@ -695,7 +695,7 @@ audio {
     }
 
     function checkIfAlreadyRSVPed(guests) {
-  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzELMJQ0NZq0pEs7eYXog2nP4uYGRF2iQuOFpMAo4dG0OemyS2ZCEsd6YsgPyfnaForB-ADOXwlKmV/pub?gid=0&single=true&output=csv";
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzELMJQ0NZq0pEs7eYXog2nP4uYGRF2iQuOFpMAo4dG0OemyS2ZCEsd6YsgPyfnaForB-ADOXwlKmV/pubhtml?gid=0&single=true&output=csv";
 
   fetch(sheetURL)
     .then(response => response.text())
@@ -892,7 +892,6 @@ formData.append("attendance", attendanceCombined.join(", "));
     body: JSON.stringify(dataObj),
   }).catch(err => console.warn("Webhook failed:", err));
 });
-
 
 
     // Initialize countdown and accessibility focus on load
