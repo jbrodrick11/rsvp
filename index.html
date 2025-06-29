@@ -850,7 +850,12 @@ formData.append("attendance", attendanceCombined.join(", "));
       guestAttendance.style.display = "none";
 
       // Optionally disable the form inputs to prevent changes
-      rsvpForm.querySelectorAll("input, button").forEach(el => el.disabled = true);
+      rsvpForm.querySelectorAll("input, button").forEach(el => {
+  if (el.name !== "song") {
+    el.disabled = true;
+  }
+});
+
 
       // Scroll to confirmation message
       window.scrollTo({ top: confirmationMessage.offsetTop - 40, behavior: "smooth" });
