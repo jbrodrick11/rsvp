@@ -22,12 +22,12 @@
 
   <style>
     :root {
-      --tea-rose: #FDBEC0;
-      --barn-red: #6C200C;
-      --bright-pink: #FE7289;
+      --tea-rose: #FFBEBF;
+      --barn-red: #96443C;
+      --bright-pink: #F5051A; 
       --salmon: #FA989B;
       --white: #FEFFFF;
-      --cmyk-red: #F40B1A;
+      --cmyk-red: #F5051A;
     }
 
     body {
@@ -157,23 +157,24 @@
       text-align: center;
     }
 
-    #passcode-container input[type="password"] {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      font-size: 1.1rem;
-      border-radius: 8px;
-      border: 2px solid var(--barn-red);
-      margin-top: 1rem;
-      margin-bottom: 1rem;
-      font-family: 'Nunito', sans-serif;
-      transition: border-color 0.3s ease;
-    }
+    #passcode-container input[type="text"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  border: 2px solid var(--barn-red);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  font-family: 'Nunito', sans-serif;
+  transition: border-color 0.3s ease;
+}
 
-    #passcode-container input[type="password"]:focus {
-      border-color: var(--cmyk-red);
-      outline: none;
-      box-shadow: 0 0 8px var(--salmon);
-    }
+
+#passcode-container input[type="text"]:focus {
+  border-color: var(--cmyk-red);
+  outline: none;
+  box-shadow: 0 0 8px var(--salmon);
+}
 
     #passcode-container button {
       width: 100%;
@@ -369,14 +370,14 @@
     <section id="passcode-container" aria-live="assertive" aria-atomic="true" data-aos="fade-up">
       <h2>Enter your RSVP code</h2>
       <p>Please enter the RSVP code found on your invitation to access the RSVP form.</p>
-      <input
-        type=“input”
-        id="passcode-input"
-        name="passcode"
-        aria-label="RSVP code"
-        autocomplete="off"
-        placeholder="Enter your RSVP code"
-      />
+     <input
+  type="text"
+  id="passcode-input"
+  name="passcode"
+  aria-label="RSVP code"
+  autocomplete="off"
+  placeholder="Enter your RSVP code"
+/>
       <button id="passcode-submit" aria-describedby="passcode-error">Unlock RSVP</button>
       <div id="passcode-error" role="alert" aria-live="assertive"></div>
     </section>
@@ -468,14 +469,15 @@
       <hr />
 
       <section aria-labelledby="extras-title">
-        <h2 id="extras-title" class="text-center">A few more things</h2>
+        <h2 id="extras-title" class="text-center">A few more things...</h2>
 
         <article>
           <h3>Wishing Well</h3>
           <p>
             Your presence at our wedding is far greater than any presents (see what we
             did there?). If you’d like to help us start our new life together, there
-            will be a wishing well set up on the day. No pressure at all though -
+            will be a wishing well set up on the day. <p/> 
+            <p>No pressure at all though -
             what's far more important to us is that you help us celebrate.
           </p>
         </article>
