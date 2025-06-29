@@ -427,11 +427,6 @@ audio {
         name="from_name"
         value="Maddy & Josh's Wedding RSVP"
       />
-      <input
-        type="hidden"
-        name="redirect"
-        value="https://your-website-url.com/thank-you.html"
-      />
       <input type="checkbox" name="botcheck" style="display:none;" />
 
       <div id="guest-attendance" aria-live="polite"></div>
@@ -812,7 +807,7 @@ audio {
     });
 
     // Handle RSVP form submission
-    rsvpForm.addEventListener("submit", (e) => {
+   rsvpForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const guestsCount = guestAttendance.children.length;
@@ -830,24 +825,51 @@ audio {
   submitBtn.disabled = true;
   submitBtn.textContent = "Sending...";
 
-  // Use Web3Forms for actual submission
-  rsvpForm.submit();
-
-  
-  // 🔔 Send RSVP data to Make webhook
+  // Prepare form data for submission
   const formData = new FormData(rsvpForm);
-  const data = {};
-  formData.forEach((value, key) => {
-    data[key] = value;
+
+  fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Show confirmation message
+      confirmationMessage.style.display = "block";
+
+      // Optionally hide the attendance section
+      guestAttendance.style.display = "none";
+
+      // Optionally disable the form inputs to prevent changes
+      rsvpForm.querySelectorAll("input, button").forEach(el => el.disabled = true);
+
+      // Scroll to confirmation message
+      window.scrollTo({ top: confirmationMessage.offsetTop - 40, behavior: "smooth" });
+    } else {
+      alert("Sorry, there was an issue submitting your RSVP. Please try again.");
+    }
+  })
+  .catch(err => {
+    console.error("Submission error:", err);
+    alert("Sorry, there was an error submitting your RSVP. Please try again.");
+  })
+  .finally(() => {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Send My RSVP";
   });
 
+  // Also send data to your Make webhook (optional)
+  const dataObj = {};
+  formData.forEach((value, key) => {
+    dataObj[key] = value;
+  });
   fetch("https://hook.eu2.make.com/mzd5qeqa72pqkpbufiqez4e98h3e9kth", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  }).catch((err) => console.warn("Webhook failed:", err));
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dataObj),
+  }).catch(err => console.warn("Webhook failed:", err));
+});
 
   // After submission, show confirmation message but keep form visible
   setTimeout(() => {
