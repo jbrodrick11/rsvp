@@ -309,6 +309,15 @@
       #countdown-days {
         font-size: 3rem;
       }
+      
+        .attendance-options {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .attendance-options label {
+    white-space: normal; /* Allow text to wrap */
+  }
     }
 
     /* Focus outline for accessibility */
@@ -370,6 +379,7 @@
     <section id="passcode-container" aria-live="assertive" aria-atomic="true" data-aos="fade-up">
       <h2>Enter your RSVP code</h2>
       <p>Please enter the RSVP code found on your invitation to access the RSVP form.</p>
+      <em>Please turn your volume up before unlocking!</em>
      <input
   type="text"
   id="passcode-input"
@@ -543,10 +553,11 @@
   </main>
 
   <!-- Background Music -->
-  <audio autoplay loop controls aria-label="Background music for wedding site">
-    <source src="your-song.mp3" type="audio/mpeg" />
-    Your browser does not support the audio element.
-  </audio>
+<audio id="bg-music" loop>
+  <source src="https://jbrodrick11.github.io/rsvp/wedding%20low.mp3" type="audio/mpeg" />
+  Your browser does not support the audio element.
+</audio>
+
 
   <!-- AOS Animation script -->
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
@@ -706,6 +717,25 @@
       passcodeContainer.style.display = "none";
       rsvpForm.style.display = "block";
       createGuestInputs(data.guests);
+      
+      const bgMusic = document.getElementById("bg-music");
+if (bgMusic) {
+    bgMusic.volume = 0;
+bgMusic.play().then(() => {
+  const fadeInterval = setInterval(() => {
+    if (bgMusic.volume < 1.0) {
+      bgMusic.volume = Math.min(1.0, bgMusic.volume + 0.05);
+    } else {
+      clearInterval(fadeInterval);
+    }
+  }, 200);
+});
+
+  bgMusic.play().catch((err) => {
+    console.warn("Music autoplay failed:", err);
+  });
+}
+
 
       // Focus first input for accessibility
       const firstRadio = guestAttendance.querySelector(
