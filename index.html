@@ -827,7 +827,15 @@ audio {
 
   // Prepare form data for submission
   const formData = new FormData(rsvpForm);
-
+// Combine attendance answers into one string
+let attendanceCombined = [];
+for (let [key, value] of formData.entries()) {
+  if (key.startsWith("attendance_")) {
+    attendanceCombined.push(value);
+    formData.delete(key); // remove individual attendance keys
+  }
+}
+formData.append("attendance", attendanceCombined.join(", "));
   fetch("https://api.web3forms.com/submit", {
     method: "POST",
     body: formData
