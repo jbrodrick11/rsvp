@@ -281,15 +281,19 @@
     }
 
     /* Background music control */
-    audio {
-      position: fixed;
-      bottom: 12px;
-      right: 12px;
-      z-index: 1100;
-      width: 240px;
-      max-width: 90vw;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+audio {
+  display: none;
+  position: fixed;
+  bottom: 12px;
+  right: 12px;
+  z-index: 1100;
+  width: 240px;
+  max-width: 90vw;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+}
+
+
     }
     /* Responsive typography */
     @media (max-width: 576px) {
@@ -695,6 +699,41 @@
       });
     }
 
+    function checkIfAlreadyRSVPed(guests) {
+  const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSzELMJQ0NZq0pEs7eYXog2nP4uYGRF2iQuOFpMAo4dG0OemyS2ZCEsd6YsgPyfnaForB-ADOXwlKmV/pub?gid=0&single=true&output=csv";
+
+  fetch(sheetURL)
+    .then(response => response.text())
+    .then(csv => {
+      const lines = csv.trim().split("\n");
+      const headers = lines[0].split(",");
+      const data = lines.slice(1).map(line => {
+        const values = line.split(",");
+        return headers.reduce((obj, key, idx) => {
+          obj[key.trim()] = values[idx]?.trim() || "";
+          return obj;
+        }, {});
+      });
+
+      const alreadyRSVPed = guests.some(guest =>
+        data.some(entry =>
+          entry.Name?.toLowerCase() === guest.toLowerCase()
+        )
+      );
+
+      if (alreadyRSVPed) {
+        guestAttendance.innerHTML = `
+          <div class="text-center fw-bold text-success">
+            ✅ We’ve already received your RSVP.
+            Feel free to suggest a song or update your details below.
+          </div>
+        `;
+      }
+    })
+    .catch(err => console.warn("Could not check RSVP status:", err));
+}
+
+
     // Show error
     function showError(message) {
       passcodeError.textContent = message;
@@ -723,19 +762,29 @@
       passcodeContainer.style.display = "none";
       rsvpForm.style.display = "block";
       createGuestInputs(data.guests);
+      checkIfAlreadyRSVPed(data.guests);
+
       
-      const bgMusic = document.getElementById("bg-music");
+const bgMusic = document.getElementById("bg-music");
 if (bgMusic) {
-    bgMusic.volume = 0;
-bgMusic.play().then(() => {
-  const fadeInterval = setInterval(() => {
-    if (bgMusic.volume < 1.0) {
-      bgMusic.volume = Math.min(1.0, bgMusic.volume + 0.05);
-    } else {
-      clearInterval(fadeInterval);
-    }
-  }, 200);
-});
+  bgMusic.volume = 0;
+  bgMusic.play().then(() => {
+    // ✅ Show audio controls
+    bgMusic.style.display = "block";
+
+    // ✅ Fade-in effect
+    const fadeInterval = setInterval(() => {
+      if (bgMusic.volume < 1.0) {
+        bgMusic.volume = Math.min(1.0, bgMusic.volume + 0.05);
+      } else {
+        clearInterval(fadeInterval);
+      }
+    }, 200);
+  }).catch((err) => {
+    console.warn("Music autoplay failed:", err);
+  });
+}
+
 
   bgMusic.play().catch((err) => {
     console.warn("Music autoplay failed:", err);
