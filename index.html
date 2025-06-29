@@ -871,14 +871,6 @@ audio {
   }).catch(err => console.warn("Webhook failed:", err));
 });
 
-  // After submission, show confirmation message but keep form visible
-  setTimeout(() => {
-    confirmationMessage.style.display = "block";
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Send My RSVP";
-    window.scrollTo({ top: confirmationMessage.offsetTop - 40, behavior: "smooth" });
-  }, 1500);
-});
 
 
     // Initialize countdown and accessibility focus on load
