@@ -841,6 +841,22 @@ if (bgMusic) {
   // Use Web3Forms for actual submission
   rsvpForm.submit();
 
+  
+  // 🔔 Send RSVP data to Make webhook
+  const formData = new FormData(rsvpForm);
+  const data = {};
+  formData.forEach((value, key) => {
+    data[key] = value;
+  });
+
+  fetch("https://hook.eu2.make.com/mzd5qeqa72pqkpbufiqez4e98h3e9kth", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  }).catch((err) => console.warn("Webhook failed:", err));
+
   // After submission, show confirmation message but keep form visible
   setTimeout(() => {
     confirmationMessage.style.display = "block";
