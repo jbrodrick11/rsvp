@@ -747,59 +747,51 @@ audio {
     }
 
     // Unlock RSVP form on correct code
-    function unlockRSVP(code) {
-      clearError();
-      const key = code.trim().toLowerCase();
-      const data = guestData[key];
-      if (!data) {
-        showError(
-          "No deal! You must have entered the wrong code, please try again."
-        );
-        return false;
-      }
+   function unlockRSVP(code) {
+  clearError();
+  const key = code.trim().toLowerCase();
+  const data = guestData[key];
+  if (!data) {
+    showError(
+      "No deal! You must have entered the wrong code, please try again."
+    );
+    return false;
+  }
 
-      // Hide passcode input, show RSVP form, generate inputs
-      passcodeContainer.style.display = "none";
-      rsvpForm.style.display = "block";
-      createGuestInputs(data.guests);
-      checkIfAlreadyRSVPed(data.guests);
+  // Hide passcode input, show RSVP form, generate inputs
+  passcodeContainer.style.display = "none";
+  rsvpForm.style.display = "block";
+  createGuestInputs(data.guests);
+  checkIfAlreadyRSVPed(data.guests);
 
-      
-const bgMusic = document.getElementById("bg-music");
-if (bgMusic) {
-  bgMusic.volume = 0;
-  bgMusic.play().then(() => {
-    // ✅ Show audio controls
-    bgMusic.style.display = "block";
+  const bgMusic = document.getElementById("bg-music");
+  if (bgMusic) {
+    bgMusic.volume = 0;
+    bgMusic.play().then(() => {
+      // ✅ Show audio controls
+      bgMusic.style.display = "block";
 
-    // ✅ Fade-in effect
-    const fadeInterval = setInterval(() => {
-      if (bgMusic.volume < 1.0) {
-        bgMusic.volume = Math.min(1.0, bgMusic.volume + 0.05);
-      } else {
-        clearInterval(fadeInterval);
-      }
-    }, 200);
-  }).catch((err) => {
-    console.warn("Music autoplay failed:", err);
-  });
+      // ✅ Fade-in effect
+      const fadeInterval = setInterval(() => {
+        if (bgMusic.volume < 1.0) {
+          bgMusic.volume = Math.min(1.0, bgMusic.volume + 0.05);
+        } else {
+          clearInterval(fadeInterval);
+        }
+      }, 200);
+    }).catch((err) => {
+      console.warn("Music autoplay failed:", err);
+    });
+  }
+
+  // Focus first input for accessibility
+  const firstRadio = guestAttendance.querySelector(
+    'input[type="radio"]'
+  );
+  if (firstRadio) firstRadio.focus();
+
+  return true;
 }
-
-
-  bgMusic.play().catch((err) => {
-    console.warn("Music autoplay failed:", err);
-  });
-}
-
-
-      // Focus first input for accessibility
-      const firstRadio = guestAttendance.querySelector(
-        'input[type="radio"]'
-      );
-      if (firstRadio) firstRadio.focus();
-
-      return true;
-    }
 
     // Handle passcode submit
     passcodeSubmit.addEventListener("click", () => {
