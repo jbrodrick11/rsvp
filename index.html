@@ -314,8 +314,25 @@ audio {
     font-size: 3rem;
   }
   .guest-card {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .guest-card .guest-name {
+    margin-bottom: 0.5rem; /* add spacing below the name */
+  }
+  
+  .guest-card .attendance-options {
+    flex-direction: column !important;
+    width: 100% !important;
+    margin-top: 0 !important; /* reset or tweak if needed */
+  }
+
+  .guest-card .attendance-options label {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    display: flex !important;
+    align-items: center !important;
   }
 .attendance-options {
     display: flex !important;
@@ -332,10 +349,19 @@ audio {
   }
 }
     @media (max-width: 576px) {
+  .guest-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  
+  .guest-card .guest-name {
+    margin-bottom: 0.5rem; /* add spacing below the name */
+  }
+  
   .guest-card .attendance-options {
     flex-direction: column !important;
     width: 100% !important;
-    margin-top: 0.5rem !important;
+    margin-top: 0 !important; /* reset or tweak if needed */
   }
 
   .guest-card .attendance-options label {
